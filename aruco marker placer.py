@@ -14,10 +14,10 @@ import cv2
 import numpy as np
 
 # I have found the marker ids of the given ArUco markers by writing a seperate program to identify the id of given ArUco marker
-markerid_1 = cv2.imread("Images/1.jpg")
-markerid_2 = cv2.imread("Images/2.jpg")
-markerid_3 = cv2.imread("Images/3.jpg")
-markerid_4 = cv2.imread("Images/4.jpg") 
+markerid_1 = cv2.imread("Photos/LMAO.jpg")
+markerid_2 = cv2.imread("Photos/XD.jpg")
+markerid_3 = cv2.imread("Photos/Ha.jpg")
+markerid_4 = cv2.imread("Photos/HaHa.jpg") 
 
 #the following values are lower and upper range of (HUE, SATURATION, VALUE)
 #I have taken the order of the colours as per the given colour for each ArUco marker 
@@ -31,10 +31,10 @@ colors_list = [[37,144,95,118,255,255],#green      #markerid_1
 markers = [markerid_1,markerid_2,markerid_3,markerid_4]
 
 
-img = cv2.imread("Images/CVtask.jpg")
+img = cv2.imread("Photos/CVtask.jpg")
 imgcopy = img.copy()#creating a copy image of the given image
 
-
+'''---------------------------------------------------------------------------------'''
 '''
 the following function detects all the squares in the given images and outputs the 
 coordinates of the corners of all the squares in the image in form of a list
@@ -61,7 +61,7 @@ def squaredetector(img):
                 
     return squares        
 
-
+'''-----------------------------------------------------------------------------------'''
 '''
 the following function is used for warp perspective of the squares in the image
 > So basically this function extracts all the squares in the image into seperate images along with coordinate values
@@ -83,8 +83,8 @@ def warp(img,squares):
     transform_matrix = cv2.getPerspectiveTransform(bounding_rect, warped)
     warped_img = cv2.warpPerspective(img, transform_matrix, (box_width, box_height))
     return [warped_img,bounding_rect,warped]
-        
- 
+
+'''-----------------------------------------------------------------------------------------'''         
 '''
 The following function is used to fill up the sqaures in imgcopy with black colour so that the colour of square doesnt
 interfere with colour of ArUco markers when we are summing up all images to get final image
@@ -105,7 +105,7 @@ def fill_up_sqaures(img):
                 cv2.drawContours(img,[i],-1,(0,0,0),cv2.FILLED)
     return img            
 
-
+'''------------------------------------------------------------------------------------'''
 '''
 The following code can be used to paste/overlay one image on other image
 > I used it for pasting the ArUco markers on the warped square images (or) just replacing 
@@ -118,7 +118,7 @@ def paste(img1,img2):
     img1 = img2
     return img1
 
-
+'''-------------------------------------------------------------------------------------'''
 '''
 The following code is used for inverse warping of the warped images
 '''
@@ -129,7 +129,7 @@ def unwarp(img1,img2,bounding_rect,warped):#inverting both the points and rewarp
     inverse_warp = cv2.addWeighted(warped_image,1,img1,0,0)  
     return inverse_warp           
 
-
+'''-------------------------------------------------------------------------------------'''
 '''
 the following code is used to combine all the inverse warped images into one 
 '''
@@ -141,7 +141,7 @@ def blend(inverse_warped,img):
     output = output.astype(np.uint8)
     return output
 
-
+'''-------------------------------------------------------------------------------------'''
 '''
 The following function is used to identify the colour of the square
 '''
@@ -156,7 +156,7 @@ def findcolour(img3,col):
         if len(squaredetector(mask)) > 0:
             return c    #As the markers are ordered according to colours it will be easy for us to assign right marker for the given colour by the index position of marker in markers list
     
-
+'''-------------------------------------------------------------------------------------'''
 '''
 As the given ArUco markers are not properly oriented we need to first orient them properly into square shape using warp function
 '''  
@@ -169,7 +169,7 @@ coordinates = squaredetector(img)   #finding the coordinates of squares in image
 inverse_warp = []                   #creating list to store all inverse warped images
 pastedimages=[]                     #creating list to store all images from the output of paste function
 
-
+'''_____________________________________________________________________________________'''
 #The following is the code for whole approach to the problem:
 for i in range(0,len(coordinates)):
     
@@ -179,7 +179,7 @@ for i in range(0,len(coordinates)):
     c = findcolour(warpedimages[i],colors_list)
     pastedimages.append(paste(t,markers[c]))                            
     inverse_warp.append(unwarp(img,pastedimages[i],details[1],details[2]))
-    
+'''____________________________________________________________________________________'''
 
 combined_image = blend(inverse_warp,img) #combining all inverse warped images
 
