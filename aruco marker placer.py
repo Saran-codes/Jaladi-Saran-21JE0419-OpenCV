@@ -14,10 +14,10 @@ import cv2
 import numpy as np
 
 # I have found the marker ids of the given ArUco markers by writing a seperate program to identify the id of given ArUco marker
-markerid_1 = cv2.imread("Photos/LMAO.jpg")
-markerid_2 = cv2.imread("Photos/XD.jpg")
-markerid_3 = cv2.imread("Photos/Ha.jpg")
-markerid_4 = cv2.imread("Photos/HaHa.jpg") 
+markerid_1 = cv2.imread("Images/1.jpg")
+markerid_2 = cv2.imread("Images/2.jpg")
+markerid_3 = cv2.imread("Images/3.jpg")
+markerid_4 = cv2.imread("Images/4.jpg") 
 
 #the following values are lower and upper range of (HUE, SATURATION, VALUE)
 #I have taken the order of the colours as per the given colour for each ArUco marker 
@@ -31,7 +31,7 @@ colors_list = [[37,144,95,118,255,255],#green      #markerid_1
 markers = [markerid_1,markerid_2,markerid_3,markerid_4]
 
 
-img = cv2.imread("Photos/CVtask.jpg")
+img = cv2.imread("Images/CVtask.jpg")
 imgcopy = img.copy()#creating a copy image of the given image
 
 '''---------------------------------------------------------------------------------'''
