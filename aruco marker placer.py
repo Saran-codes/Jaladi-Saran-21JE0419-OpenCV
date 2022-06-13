@@ -67,6 +67,7 @@ the following function is used for warp perspective of the squares in the image
 > So basically this function extracts all the squares in the image into seperate images along with coordinate values
 '''
 def warp(img,squares):
+    #As the coordinates are not arranged properly we reaarange them properly by checking the sum and difference of x and y coordinates
     pts = np.squeeze(squares)    
     box_width = np.max(pts[:, 0]) - np.min(pts[:, 0])    
     box_height = np.max(pts[:, 1]) - np.min(pts[:, 1])
